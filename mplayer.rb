@@ -1,9 +1,7 @@
 require 'formula'
 
-puts "yes"
-
 class Mplayer <Formula
-  head 'git://repo.or.cz/mplayer.git', :using => :git
+  head 'git://repo.or.cz/mplayer.git', :using => :git, :branch => :temp
   homepage 'http://repo.or.cz/w/mplayer.git'
 
   depends_on 'pkg-config' => :build
@@ -18,7 +16,7 @@ class Mplayer <Formula
     ENV['CXXFLAGS'] = ''
     
     args = ["--prefix=#{prefix}", "--cc=gcc-4.2", "--enable-largefiles", 
-            "--disable-x11", "--disable-gl", "--disable-mencoder",
+            "--disable-x11", "--disable-gl",
             "--enable-apple-remote", "--enable-macosx-bundle",
             "--enable-macosx-finder"]
     

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mplayer <Formula
-  head 'git://repo.or.cz/mplayer.git', :using => :git, :branch => :temp
+  head 'git://repo.or.cz/mplayer.git', :using => :git
   homepage 'http://repo.or.cz/w/mplayer.git'
 
   depends_on 'pkg-config' => :build

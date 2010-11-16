@@ -9,10 +9,11 @@ The original project is on [Google code](http://code.google.com/p/mplayerosx-bui
 
 Actually, I really wanna build from source
 ------------------------------------------
-Then get XCode, homebrew, clone this project and use my formulae! You can then compile ffmpeg-mt, libass, yasm and mplayer.git by moving to the cloned directory and issuing:
+If you are familiar with homebrew you can use my formulae directly; otherwise you can use the provided rake task:
 
-	brew install $PWD/mplayer.rb
+	git clone git://github.com/pigoz/mplayerosx-builds.git
+	cd mplayerosx-builds && rake build
 
-Why not push these formulae to homebrew trunk?
+Why not push these formulae to homebrew master?
 ----------------------------------------------
-mplayer.git is pretty hackish and experimental: it doesn't belong anywhere as a default choice.
+mplayer.git is an unofficial fork of the original mplayer which alredy has an homebrew formula. I think that having this in homebrew trunk would only lead to confusion in the end users.

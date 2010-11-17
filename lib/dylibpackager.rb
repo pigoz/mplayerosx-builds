@@ -15,20 +15,18 @@ class DylibPackager
     fix_libraries(dest_file, dest_dir + 'lib')
   end
   
+  private
   def cp_libraries(file, to)
-    file = Pathname.new(file)
     file.liblist.each do |dylib|
-      dylib = Pathname.new(dylib)
       dylib.cp_to(to + dylib.basename)
-      cp_libraries(to + Pathname.new(dylib).basename, to)
+      cp_libraries(to + dylib.basename, to)
     end
   end
   
   def fix_libraries(file, to)
-    file = Pathname.new(file)
     file.liblist.each do |dylib|
       file.install_name_tool(dylib, '@executable_path/lib', to)
-      fix_libraries(to + Pathname.new(dylib).basename, to)
+      fix_libraries(to + dylib.basename, to)
     end
   end
 end

@@ -22,7 +22,7 @@ class Pathname
   
   def otool
     %x[otool -L #{self}].each_line.grep(/\t(.*)/) do
-      $1.gsub(/(\(.*\))/,'').strip
+      $1.gsub(/(\(.*?\))/,'').strip
     end
   end
     

@@ -11,15 +11,21 @@ class Pathname
   end
   
   def liblist
-    otool.select{|x| Pathname.new(x).basename != self.basename}
+    usrlibs.select{|x| x.basename != self.basename}
+  end
+  
+  def usrlibs
+    otool.select do |x|
+      not x =~ /.^?(libobjc|libSystem|libgcc).?/ || x =~ /^\/System.+/
+    end.map {|x| Pathname.new(x)}
   end
   
   def otool
-    %x[otool -L #{self}].each_line.grep(/\t(\/usr\/(local|X11|lib).*)/) do
+    %x[otool -L #{self}].each_line.grep(/\t(.*)/) do
       $1.gsub(/(\(.*\))/,'').strip
-    end.select{|x| not x =~ /.^?(libobjc|libSystem|libgcc).?/}
+    end
   end
-  
+    
   def install_name_tool(dylib, prefix, libsdir = dirname)
     dylib = Pathname.new(dylib)
     prefix = Pathname.new(prefix)

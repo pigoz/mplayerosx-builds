@@ -1,6 +1,13 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require 'pathname'
 require 'tty'
+begin
+  require 'rspec/core/rake_task'
+rescue LoadError
+  puts 'To use rspec for testing you must install rspec gem:'
+  puts 'gem install rspec'
+  exit
+end
 
 task :build do
   if %x[which brew].strip.empty? then
@@ -22,4 +29,13 @@ task :stage do
 
   lt = DylibPackager.new(Pathname.new(%x[which mplayer].strip))
   lt.stage_to('work')
+end
+
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+end
+
+RSpec::Core::RakeTask.new(:specdoc) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.rspec_opts = ['--format documentation']
 end

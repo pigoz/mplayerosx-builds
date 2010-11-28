@@ -5,6 +5,7 @@ class Mplayer <Formula
   homepage 'http://repo.or.cz/w/mplayer.git'
 
   depends_on 'pkg-config' => :build
+  depends_on 'libbs2b' => :build
   depends_on 'libass' => :build
   depends_on File.join(File.dirname(__FILE__),'ffmpeg.rb') => :build
 

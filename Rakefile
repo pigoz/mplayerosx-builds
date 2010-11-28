@@ -12,10 +12,10 @@ end
 task :build do
   if %x[which brew].strip.empty? then
     onoe "Can't find homebrew installed on your system. Is brew in your path?"
-    exit(-1)
+    exit!
   end
 
-  %[brew install #{(Pathname.pwd + 'formulae' + 'mplayer.rb').realpath}]
+  %x[brew install #{(Pathname.pwd + 'formulae' + 'mplayer.rb').realpath}]
 end
 
 task :stage do
@@ -24,7 +24,7 @@ task :stage do
     require 'dylibpackager'
   rescue LoadError
     onoe "Can't load mplayerosx-builds libraries, please check your $LOAD_PATH"
-    exit(-1)
+    exit!
   end
 
   lt = DylibPackager.new(Pathname.new(%x[which mplayer].strip))

@@ -15,7 +15,8 @@ task :build do
     exit!
   end
 
-  %x[brew install #{(Pathname.pwd + 'formulae' + 'mplayer.rb').realpath}]
+  puts %x[brew install #{(Pathname.pwd + \
+    'formulae' + 'mplayer.rb').realpath} 1>&2]
 end
 
 task :stage do

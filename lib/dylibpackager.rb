@@ -1,14 +1,9 @@
-class DylibPackager
-  
-  def initialize(source)
-    @source = Pathname.new(source)
-  end
-  
-  def stage_to(dest_dir)
-    dest_dir = Pathname.new(dest_dir).absolute
-    dest_file = dest_dir + @source.basename
+require 'packager'
+
+class DylibPackager < Packager
     
-    @source.cp_to(dest_file)
+  def stage_to(dest_dir)
+    dest_dir, dest_file = super(dest_dir)
     dest_file.make_executable
     
     cp_libraries(dest_file, dest_dir + 'lib')

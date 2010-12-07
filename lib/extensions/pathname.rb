@@ -4,7 +4,7 @@ class Pathname
   end
   
   def cp_to(dest)
-    FileUtils.cp(self, dest)
+    FileUtils.cp_r(self, dest)
   rescue Errno::ENOENT
     FileUtils.mkdir_p dest.dirname
     retry

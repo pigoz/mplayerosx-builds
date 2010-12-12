@@ -1,6 +1,8 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require 'pathname'
 require 'tty'
+require 'extensions/pathname'
+require 'extensions/time'
 begin
   require 'rspec/core/rake_task'
 rescue LoadError
@@ -19,17 +21,43 @@ task :build do
     'formulae' + 'mplayer.rb').realpath} 1>&2]
 end
 
-task :stage do
-  begin
-    require 'extensions/pathname'
-    require 'dylibpackager'
-  rescue LoadError
-    onoe "Can't load mplayerosx-builds libraries, please check your $LOAD_PATH"
-    exit!
+namespace :pkg do
+  task :stage do
+    begin
+      require 'dylibpackager'
+    rescue LoadError
+      onoe "Can't load mplayerosx-builds libraries: check your $LOAD_PATH"
+      exit!
+    end
+
+    lt = DylibPackager.new(Pathname.new(%x[which mplayer].strip))
+    lt.stage_to('work')
+  end
+  
+  task :mposx do
+    require 'mposxbinpackager'
+    
+    pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries')
+    pkgr.stage_to('deploy')
+    pkgr.make_plist({:name => "mplayer.git (private)"})
+    pkgr.bundle_mplayer
   end
 
-  lt = DylibPackager.new(Pathname.new(%x[which mplayer].strip))
-  lt.stage_to('work')
+  task :mposxrelease do
+    require 'mposxbinpackager'
+    
+    pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries')
+    pkgr.stage_to('deploy')
+    pkgr.add_key('~/dsa_pub.pem')
+    pkgr.make_plist({
+        :SUFeedURL => "http://pigoz.github.com/mplayerosx-builds/appcast.xml",
+        :SUPublicDSAKeyFile => "dsa_pub.pem" })
+    pkgr.bundle_mplayer
+  end
+  
+  task :mpclibin do
+    ohai "::todo:: :)"
+  end
 end
 
 RSpec::Core::RakeTask.new(:spec) do |t|

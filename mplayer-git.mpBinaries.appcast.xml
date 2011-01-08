@@ -8,9 +8,9 @@
 		<item>
 			<title>Version 2011-01-08</title>
 			<sparkle:releaseNotesLink>http://pigoz.github.com/mplayerosx-builds/mplayer-git.mpBinaries.rnotes/2011-01-08.html</sparkle:releaseNotesLink>
-			<pubDate>2011-01-08 14:53:32 +0100</pubDate>
+			<pubDate>2011-01-08 15:09:28 +0100</pubDate>
 			<enclosure url="http://mplayerosx-builds.googlecode.com/files/mplayer-git-2011-01-08.zip" sparkle:version="20110108" sparkle:shortVersionString="2011-01-08"	
-			sparkle:dsaSignature="MCwCFGx0bk4/ZU2SqZzfreDbU16wus8+AhRnJdum3bPBXo8oD0VnSmM8SrD8uA==" length="64" type="application/octet-stream" />
+			sparkle:dsaSignature="MCwCFG6LOQnUlZu/PvKo80L23lXGkwcDAhQBleewi5XbQSTW77vCWoEg2EXbUA==" length="8206189" type="application/octet-stream" />
 		</item>
 	</channel>
 </rss>

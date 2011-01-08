@@ -39,4 +39,15 @@ class Packager
   def add_key(original)
     FileUtils.cp(Pathname.new(original).expand_path, resources_dir)
   end
+  
+  def zip(time=Time.now)
+    sh %{cd "#{@dest_file.dirname}" && \
+         zip -rq #{zip_filename(time)} #{@dest_file.basename}}
+    [zip_filename(time), time]
+  end
+  
+  private
+  def zip_filename(time=Time.now)
+    "mplayer-git-#{time.to_ver("-")}.zip"
+  end
 end

@@ -12,7 +12,7 @@ class MPOSXBinPgkr < Packager
                              "x86_64 and Snow Leopard only."
     options[:maintainer] ||= "Stefano Pigozzi"
     options[:homepage] ||= "http://github.com/pigoz/mplayerosx-builds"
-    options[:identifier] ||= "com.github.pigoz.mplayerosx-builds"
+    options[:identifier] ||= "com.google.code.mplayerosx-builds.git"
     options[:svn] ||= "35000"
     options[:time] ||= Time.now
     

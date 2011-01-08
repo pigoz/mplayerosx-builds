@@ -1,4 +1,6 @@
 class Pathname
+  alias_method :/, :+
+  
   def make_executable
     chmod(stat.mode|00100) if exist? and not executable?
   end

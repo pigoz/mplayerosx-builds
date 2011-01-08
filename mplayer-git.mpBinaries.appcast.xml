@@ -6,11 +6,11 @@
 		<description>Most recent changes with links to updates.</description>
 		<language>en</language>
 		<item>
-			<title>Version %s</title>
+			<title>Version 2011-01-08</title>
 			<sparkle:releaseNotesLink>http://pigoz.github.com/mplayerosx-builds/mplayer-git.mpBinaries.rnotes/2011-01-08.html</sparkle:releaseNotesLink>
-			<pubDate>2011-01-08 14:43:03 +0100</pubDate>
+			<pubDate>2011-01-08 14:53:32 +0100</pubDate>
 			<enclosure url="http://mplayerosx-builds.googlecode.com/files/mplayer-git-2011-01-08.zip" sparkle:version="20110108" sparkle:shortVersionString="2011-01-08"	
-			sparkle:dsaSignature="MC0CFQC30g137xQmDbYRd39vC+0cFl+9kQIUdyo7gY6VAwPDsMFDn+FGNEqCxAM=" length="64" type="application/octet-stream" />
+			sparkle:dsaSignature="MCwCFGx0bk4/ZU2SqZzfreDbU16wus8+AhRnJdum3bPBXo8oD0VnSmM8SrD8uA==" length="64" type="application/octet-stream" />
 		</item>
 	</channel>
 </rss>

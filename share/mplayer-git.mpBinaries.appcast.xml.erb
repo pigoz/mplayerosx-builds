@@ -2,15 +2,15 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<channel>
 		<title>mplayer.git Binary Distribution Changelog</title>
-		<link>http://pigoz.github.com/mplayerosx-builds/appcast.xml</link>
+		<link>http://pigoz.github.com/mplayerosx-builds/mplayer-git.mpBinaries.appcast.xml</link>
 		<description>Most recent changes with links to updates.</description>
 		<language>en</language>
 		<item>
-			<title>Version %s</title>
-			<sparkle:releaseNotesLink>http://pigoz.github.com/mplayerosx-builds/rnotes/<%= time.to_ver %>.html</sparkle:releaseNotesLink>
+			<title>Version <%= time.to_ver("-") %></title>
+			<sparkle:releaseNotesLink>http://pigoz.github.com/mplayerosx-builds/mplayer-git.mpBinaries.rnotes/<%= time.to_ver("-") %>.html</sparkle:releaseNotesLink>
 			<pubDate><%= time %></pubDate>
 			<enclosure url="http://mplayerosx-builds.googlecode.com/files/<%= zipfile %>" sparkle:version="<%= time.to_ver %>" sparkle:shortVersionString="<%= time.to_ver '-' %>"	
-			sparkle:dsaSignature="<%= dsa %>" length="<%= dsa.length %>" type="application/octet-stream" />
+			sparkle:dsaSignature="<%= dsa %>" length="<%= size %>" type="application/octet-stream" />
 		</item>
 	</channel>
 </rss>

@@ -32,6 +32,9 @@ class MPOSXBinPgkr < Packager
       :CFBundleInfoDictionaryVersion => "6.0",
       :LSBackgroundOnly => 1
     }
+    r[:SUFeedURL] = options[:appcast] if options[:appcast]
+    r[:SUPublicDSAKeyFile] = options[:dsa_key] if options[:dsa_key]
+    
     r.to_plist
   end
   

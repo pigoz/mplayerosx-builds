@@ -3,6 +3,7 @@ require 'pathname'
 require 'tty'
 require 'extensions/pathname'
 require 'extensions/time'
+require 'extensions/hash'
 begin
   require 'rspec/core/rake_task'
 rescue LoadError
@@ -26,10 +27,19 @@ end
 task :rebuild => [:uninstall, :build] do ; end
 
 namespace :sparkle do
+  task :clear do
+    Pathname.new('sparkle').rmtree
+  end
+  
   task :init do
+    if Pathname.new('sparkle').exist? then
+      onoe "Sparkle directory alredy exists. Run rake sparkle:clear"
+      exit!
+    end
+    Pathname.new('sparkle').mkdir
     sh "mkdir sparkle"
-    sh "cd sparkle && git clone -b gh-pages /
-        git@github.com:pigoz/mplayerosx-builds.git"
+    sh "git clone -b gh-pages \
+        git@github.com:pigoz/mplayerosx-builds.git sparkle"
   end
 end
 
@@ -48,23 +58,36 @@ namespace :pkg do
 
   # Rake task to create the distributable self updating bundle
   task :mposxd do
+    require 'erb'
     require 'mposxbinpackager'
     pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries')
     pkgr.stage_to('deploy')
     pkgr.add_key('~/dsa_pub.pem')
     pkgr.make_plist({
-        :SUFeedURL => "http://pigoz.github.com/mplayerosx-builds/appcast.xml",
-        :SUPublicDSAKeyFile => "dsa_pub.pem" })
+        :appcast => "http://pigoz.github.com/mplayerosx-builds" + 
+                      "/mplayer-git.mpBinaries.appcast.xml",
+        :dsa_key => "dsa_pub.pem" })
     pkgr.bundle_mplayer
-    zipfile, time = pkgr.zip
     
-    require 'erb'
+    zipfile, time = pkgr.zip
     dsa = `openssl dgst -sha1 -binary < deploy/#{zipfile} |\
      openssl dgst -dss1 -sign ~/dsa_priv.pem | openssl enc -base64`.strip
+    
     appcast = ERB.new(IO.read('share/mplayer-git.mpBinaries.appcast.xml.erb'))
-    puts appcast.result(binding)
+    locals = {:zipfile => zipfile, :time => time, :dsa => dsa,
+              :size => File.size('deploy/'+zipfile)}
+    File.open('sparkle/mplayer-git.mpBinaries.appcast.xml', 'w+') do |f|
+      f.puts appcast.result(locals.to_binding)
+    end
     
-    
+    git_commit = `cd ~/Library/Caches/Homebrew/mplayer--git && \
+      git log -n1 | grep ^commit. | sed -e 's/^commit.//g'`.strip
+    rnotes = ERB.new(IO.read('share/mplayer-git.mpBinaries.rnotes.html.erb'))
+    locals = {:time => time, :commit => git_commit}
+    File.open("sparkle/mplayer-git.mpBinaries.rnotes/#{time.to_ver("-")}.html",
+              'w+') do |f|
+      f.puts rnotes.result(locals.to_binding)
+    end
   end
 end
 

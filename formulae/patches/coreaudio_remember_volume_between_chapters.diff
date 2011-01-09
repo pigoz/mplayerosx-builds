@@ -1,0 +1,42 @@
+diff --git a/libao2/ao_coreaudio.c b/libao2/ao_coreaudio.c
+index 130eee8..bca9ce7 100644
+--- a/libao2/ao_coreaudio.c
++++ b/libao2/ao_coreaudio.c
+@@ -100,6 +100,9 @@ typedef struct ao_coreaudio_s
+ 
+ static ao_coreaudio_t *ao = NULL;
+ 
++/* variable to store the volume when changing between audio units */
++static Float32 temp_vol = -1.0;
++
+ /**
+  * \brief add data to ringbuffer
+  */
+@@ -416,6 +419,14 @@ int b_alive;
+ 		ao_msg(MSGT_AO, MSGL_WARN, "Unable to initialize Output Unit component: [%4.4s]\n", (char *)&err);
+ 		goto err_out1;
+ 	}
++
++	if (temp_vol >= 0) {
++		err = AudioUnitSetParameter(ao->theOutputUnit, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, temp_vol, 0);
++		if (err) {
++			ao_msg(MSGT_AO, MSGL_WARN, "could not restore the HAL output volume: [%4.4s]\n", (char *)&err);
++			goto err_out2;
++		}
++	}
+ 
+ 	size =  sizeof(AudioStreamBasicDescription);
+ 	err = AudioUnitSetProperty(ao->theOutputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inDesc, size);
+@@ -1005,6 +1016,12 @@ static void uninit(int immed)
+   OSStatus            err = noErr;
+   UInt32              i_param_size = 0;
+ 
++  err = AudioUnitGetParameter(ao->theOutputUnit, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, &temp_vol);
++  if(err) {
++    temp_vol = -1.0; // backing off to standard volume
++    ao_msg(MSGT_AO, MSGL_WARN, "could not save HAL output volume: [%4.4s]\n", (char *)&err);
++  }
++
+   if (!immed) {
+     long long timeleft=(1000000LL*av_fifo_size(ao->buffer))/ao_data.bps;
+     ao_msg(MSGT_AO,MSGL_DBG2, "%d bytes left @%d bps (%d usec)\n", av_fifo_size(ao->buffer), ao_data.bps, (int)timeleft);

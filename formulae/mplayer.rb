@@ -7,7 +7,7 @@ class Mplayer <Formula
   depends_on 'pkg-config' => :build
   depends_on 'libbs2b' => :build
   depends_on 'libass' => :build
-  depends_on File.join(File.dirname(__FILE__),'ffmpeg.rb') => :build
+  depends_on Pathname.new(__FILE__).dirname + 'ffmpeg.rb' => :build
 
   def install
     ENV.gcc_4_2
@@ -26,5 +26,11 @@ class Mplayer <Formula
     system "./configure", *args
     system "make"
     system "make install"
+  end
+  
+  def patches
+    patches_directory = Pathname.new(__FILE__).dirname + 'patches'
+    ['coreaudio_remember_volume_between_chapters.diff'
+    ].map{|patch_name| patches_directory + patch_name}
   end
 end

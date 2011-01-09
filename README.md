@@ -5,15 +5,35 @@ This project uses custom [mxcl/homebrew](http://github.com/mxcl/homebrew) formul
 
 Where to get binaries now?
 --------------------------
-The original project is on [Google code](http://code.google.com/p/mplayerosx-builds/): you can use the binaries offered there for the time being. Even if they are built with [mplayer-build.git scripts](http://repo.or.cz/w/mplayer-build.git) and are pretty old they will probably satisfy most users.
+The binaries are on [Google code](http://code.google.com/p/mplayerosx-builds/). The rest of project (i.e.: scripts for producing the binaries, wiki articles, etc) is in the process of being moved to this GitHub project.
 
 Actually, I really wanna build from source
 ------------------------------------------
 If you are familiar with homebrew you can use my formulae directly; otherwise you can use the provided rake task:
 
-	git clone git://github.com/pigoz/mplayerosx-builds.git
-	cd mplayerosx-builds && rake build
+    git clone -b master git://github.com/pigoz/mplayerosx-builds.git
+    cd mplayerosx-builds
+    rake build
 
-Why not push these formulae to homebrew master?
+After a while your mplayer will be compiled, installed to the Cellar and symlinked to `/usr/local/bin`. Now if you want to to make a personal mpBinaries bundle just run:
+
+    rake pkg:mposxt
+
+This will create a bundle in the `deploy/` directory. The mplayer binary used in the bundle is the first in your path (the one listed by the `which` unix command).
+To use it with [MPlayerOSX Extended](http://www.mplayerosx.ch/) just double click on the bundle.
+
+Why not push these formulae to homebrew?
 ----------------------------------------------
 mplayer.git is an unofficial fork of the original mplayer which alredy has an homebrew formula. I think that having this in homebrew trunk would only lead to confusion in the end users.
+
+Issues? Comments?
+-----------------
+If you found some issues with these binaries or have some suggestions please open a ticket on the [Issue Tracker](https://github.com/pigoz/mplayerosx-builds/issues).
+
+Contribute
+----------
+Send me a pull request for small changes otherwise contact me by mail or IRC.
+
+Contacts
+========
+Drop me a mail at stefano.pigozzi@gmail.com, [follow me](http://twitter.com/pigoz) on twitter or find me on IRC (pgz` on rizon and freenode)

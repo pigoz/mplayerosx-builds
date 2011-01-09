@@ -47,7 +47,8 @@ namespace :pkg do
   # Rake task to create a personal/testing version of the bundle
   task :mposxt do
     require 'mposxbinpackager'
-    pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries')
+    pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries',
+                            'mplayer-git-local.mpBinaries')
     pkgr.stage_to('deploy')
     pkgr.make_plist({
       :name => "mplayer.git (local)",

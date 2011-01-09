@@ -4,13 +4,14 @@ class Packager
   
   def destination; @dest_file; end
   
-  def initialize(source)
+  def initialize(source, dest_basename = nil)
     @source = Pathname.new(source)
+    @dest_basename = dest_basename || @source.basename
   end
   
   def stage_to(dest_dir, &block)
     dest_dir = Pathname.new(dest_dir).absolute
-    @dest_file = dest_dir + @source.basename
+    @dest_file = dest_dir + @dest_basename
     
     @source.cp_to(@dest_file)
     block.call(dest_dir, @dest_file) if block_given?

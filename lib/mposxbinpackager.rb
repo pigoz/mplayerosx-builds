@@ -1,4 +1,10 @@
-require 'plist'
+begin
+  require 'plist'
+rescue LoadError
+  puts 'To use the mplayer bundler you must install the plist gem:'
+  puts 'gem install plist'
+  exit
+end
 require 'packager'
 require 'dylibpackager'
 

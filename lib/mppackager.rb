@@ -18,11 +18,12 @@ class MPPgkr < Packager
   def plist(options = {})
     options[:name] ||= "mplayer2"
     options[:identifier] ||= "org.mplayer2.mplayer2.standalone"
+    options[:version] ||= "2.0"
     r = {
       :CFBundleIdentifier => options[:identifier],
       :CFBundleName => options[:name],
       :CFBundlePackageType => "APPL",
-      :CFBundleShortVersionString => "2.0rc3",
+      :CFBundleShortVersionString => options[:version],
       :CFBundleExecutable => "mplayer",
       :CFBundleIconFile => "icon",
       :CFBundleInfoDictionaryVersion => "6.0",
@@ -68,6 +69,7 @@ class MPPgkr < Packager
            :CFBundleURLSchemes => ["dvdnav", "dvd", "vcd"]}
         ]
     }
+    r.to_plist
   end
   
   private

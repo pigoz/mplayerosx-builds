@@ -90,6 +90,16 @@ namespace :pkg do
       f.puts rnotes.result(locals.to_binding)
     end
   end
+  
+  task :mpb, :version do |t, args|
+    require 'mppackager'
+    pkgr = MPPgkr.new('share/mplayer2.app')
+    pkgr.stage_to('deploy')
+    pkgr.make_plist({
+      :version => args[:version]
+    })
+    pkgr.bundle_mplayer
+  end
 end
 
 # Unit tests tasks

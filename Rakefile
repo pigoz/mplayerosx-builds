@@ -95,9 +95,8 @@ namespace :pkg do
     require 'mppackager'
     pkgr = MPPgkr.new('share/mplayer2.app')
     pkgr.stage_to('deploy')
-    pkgr.make_plist({
-      :version => args[:version]
-    })
+    args.with_defaults(:version => Time.now.to_ver('-'))
+    pkgr.make_plist(args)
     pkgr.bundle_mplayer
   end
 end

@@ -18,7 +18,7 @@ class MPPgkr < Packager
   def plist(options = {})
     options[:name] ||= "mplayer2"
     options[:identifier] ||= "org.mplayer2.mplayer2.standalone"
-    options[:version] ||= "2.0"
+    options[:version] ||= Time.now.to_ver('-')
     r = {
       :CFBundleIdentifier => options[:identifier],
       :CFBundleName => options[:name],

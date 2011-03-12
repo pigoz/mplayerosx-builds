@@ -1,6 +1,6 @@
 mplayerosx-builds
 =================
-mplayerosx-builds is a collection of scripts that I use to compile [mplayer.git](http://repo.or.cz/w/mplayer.git) on the Mac.
+mplayerosx-builds is a collection of scripts that I use to compile [mplayer2](http://www.mplayer2.org/) on the Mac.
 This project uses custom [mxcl/homebrew](http://github.com/mxcl/homebrew) formulae for compilation and dependency management.
 
 Where to get binaries now?
@@ -15,16 +15,23 @@ If you are familiar with homebrew you can use my formulae directly; otherwise yo
     cd mplayerosx-builds
     rake build
 
-After a while your mplayer will be compiled, installed to the Cellar and symlinked to `/usr/local/bin`. Now if you want to to make a personal mpBinaries bundle just run:
+After a while your mplayer will be compiled, installed to the Cellar and symlinked to `/usr/local/bin`.
 
-    rake pkg:mposxt
+Making Mac OSX Bundles
+----------------------
+You can make different types of bundles, they all have a few things in common:
 
-This will create a bundle in the `deploy/` directory. The mplayer binary used in the bundle is the first in your path (the one listed by the `which` unix command).
-To use it with [MPlayerOSX Extended](http://www.mplayerosx.ch/) just double click on the bundle.
+ *  the bundle is created in the `deploy/` directory
+ *  the mplayer binary used in the bundle is the first in your path (the one listed by the `which` unix command).
+
+Here is a list of bundles:
+
+ *  `rake pkg:mpb[$version]`: makes a standalone binary `mplayer2.app` that you can drop to your Applications directory. If version is not provided the current date is used.
+ *  `rake pkg:mposxt`: makes a mpBinaries bundle that works with MPlayerOSX Extended.
 
 Why not push these formulae to homebrew?
 ----------------------------------------------
-mplayer.git is an unofficial fork of the original mplayer which alredy has an homebrew formula. I think that having this in homebrew trunk would only lead to confusion in the end users.
+In time I will. When ffmpeg-mt gets merged into ffmpeg would be a good timeframe.
 
 Issues? Comments?
 -----------------

@@ -6,9 +6,10 @@ class Pathname
   end
   
   def cp_to(dest)
+    FileUtils.rm_r(dest, :force => true)
     FileUtils.cp_r(self, dest)
   rescue Errno::ENOENT
-    FileUtils.mkdir_p dest.dirname
+    FileUtils.mkdir_p(dest.dirname)
     retry
   end
   

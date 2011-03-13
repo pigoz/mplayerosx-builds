@@ -34,7 +34,7 @@ class MPOSXBinPgkr < Packager
       :CFBundleVersion => options[:time].to_ver,
       :CFBundleShortVersionString => options[:time].to_ver('-'),
       :CFBundleIdentifier => options[:identifier],
-      :CFBundleExecutable => "mplayer",
+      :CFBundleExecutable => mplayer,
       :CFBundleInfoDictionaryVersion => "6.0",
       :LSBackgroundOnly => 1
     }
@@ -42,11 +42,6 @@ class MPOSXBinPgkr < Packager
     r[:SUPublicDSAKeyFile] = options[:dsa_key] if options[:dsa_key]
     
     r.to_plist
-  end
-  
-  def bundle_mplayer
-    lt = DylibPackager.new(Pathname.new(%x[which mplayer].strip))
-    lt.stage_to(self.binary_dir)
   end
   
 end

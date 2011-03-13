@@ -10,21 +10,14 @@ require 'dylibpackager'
 
 class MPPgkr < Packager
   
-  def bundle_mplayer
-    lt = DylibPackager.new(Pathname.new(%x[which mplayer].strip))
-    lt.stage_to(self.binary_dir)
-  end
-  
   def plist(options = {})
-    options[:name] ||= "mplayer2"
-    options[:identifier] ||= "org.mplayer2.mplayer2.standalone"
     options[:version] ||= Time.now.to_ver('-')
     r = {
-      :CFBundleIdentifier => options[:identifier],
-      :CFBundleName => options[:name],
+      :CFBundleIdentifier => "org.mplayer2.mplayer2.standalone",
+      :CFBundleName => "mplayer2",
       :CFBundlePackageType => "APPL",
       :CFBundleShortVersionString => options[:version],
-      :CFBundleExecutable => "mplayer",
+      :CFBundleExecutable => mplayer,
       :CFBundleIconFile => "icon",
       :CFBundleInfoDictionaryVersion => "6.0",
       :CFBundleDevelopmentRegion => "English",

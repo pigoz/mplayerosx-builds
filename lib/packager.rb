@@ -1,5 +1,17 @@
+module MPlayerBundler
+  def mplayer
+    "mplayer2"
+  end
+  
+  def bundle_mplayer
+    lt = DylibPackager.new(Pathname.new(%x[which #{mplayer}].strip))
+    lt.stage_to(self.binary_dir)
+  end
+end
+
 # A class to deal with binary packaging lifecycle
 class Packager
+  include MPlayerBundler
   attr_reader :source
   
   def destination; @dest_file; end

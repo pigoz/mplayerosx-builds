@@ -17,7 +17,6 @@ class FfmpegMt <Formula
     args = ["--prefix=#{prefix}",
             "--enable-gpl",
             "--enable-nonfree",
-            "--cpu=host",
             "--disable-indev=jack",
             "--disable-debug",
             "--enable-pthreads",

@@ -34,8 +34,6 @@ class Mplayer2 <Formula
   end
   
   def patches
-    patches_directory = Pathname.new(__FILE__).dirname + 'patches'
-    ['coreaudio_remember_volume_between_chapters.diff'
-    ].map{|patch_name| patches_directory + patch_name}
+    Dir.glob(Pathname.new(__FILE__).dirname + "patches" + "*.diff")
   end
 end

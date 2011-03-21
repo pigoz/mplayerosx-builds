@@ -7,7 +7,7 @@ class Mplayer2 <Formula
   depends_on 'pkg-config' => :build
   depends_on 'libbs2b' => :build
   depends_on 'libass' => :build
-  depends_on Pathname.new(__FILE__).dirname + 'ffmpeg-mt.rb' => :build
+  depends_on File.join(File.dirname(__FILE__), 'ffmpeg-mt.rb') => :build
 
   def install
     ENV.gcc_4_2
@@ -34,6 +34,6 @@ class Mplayer2 <Formula
   end
   
   def patches
-    Dir.glob(Pathname.new(__FILE__).dirname + "patches" + "*.diff")
+    Dir.glob(File.join(File.dirname(__FILE__), "patches", "*.diff")
   end
 end

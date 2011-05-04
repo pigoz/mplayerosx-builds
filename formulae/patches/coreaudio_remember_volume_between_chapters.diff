@@ -1,8 +1,8 @@
 diff --git a/libao2/ao_coreaudio.c b/libao2/ao_coreaudio.c
-index 130eee8..bca9ce7 100644
+index cf43800..452b7d1 100644
 --- a/libao2/ao_coreaudio.c
 +++ b/libao2/ao_coreaudio.c
-@@ -100,6 +100,9 @@ typedef struct ao_coreaudio_s
+@@ -118,6 +118,9 @@ typedef struct ao_coreaudio_s
  
  static ao_coreaudio_t *ao = NULL;
  
@@ -12,11 +12,10 @@ index 130eee8..bca9ce7 100644
  /**
   * \brief add data to ringbuffer
   */
-@@ -416,6 +419,14 @@ int b_alive;
- 		ao_msg(MSGT_AO, MSGL_WARN, "Unable to initialize Output Unit component: [%4.4s]\n", (char *)&err);
+@@ -572,6 +575,14 @@ int device_id, display_help = 0;
  		goto err_out1;
  	}
-+
+ 
 +	if (temp_vol >= 0) {
 +		err = AudioUnitSetParameter(ao->theOutputUnit, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, temp_vol, 0);
 +		if (err) {
@@ -24,12 +23,13 @@ index 130eee8..bca9ce7 100644
 +			goto err_out2;
 +		}
 +	}
- 
++
  	size =  sizeof(AudioStreamBasicDescription);
  	err = AudioUnitSetProperty(ao->theOutputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &inDesc, size);
-@@ -1005,6 +1016,12 @@ static void uninit(int immed)
+ 
+@@ -1115,6 +1126,12 @@ static void uninit(int immed)
+ {
    OSStatus            err = noErr;
-   UInt32              i_param_size = 0;
  
 +  err = AudioUnitGetParameter(ao->theOutputUnit, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, &temp_vol);
 +  if(err) {

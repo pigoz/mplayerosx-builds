@@ -18,7 +18,6 @@ class Mplayer2 <Formula
     
     args = ["--prefix=#{prefix}",
             "--cc=gcc-4.2",
-            "--enable-largefiles",
             "--disable-x11",
             "--disable-gl",
             "--enable-apple-remote",

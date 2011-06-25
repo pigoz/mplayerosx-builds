@@ -15,7 +15,7 @@ class Mplayer2 <Formula
     ENV['LD'] = ''
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
-    
+
     args = ["--prefix=#{prefix}",
             "--cc=gcc-4.2",
             "--disable-x11",
@@ -23,15 +23,17 @@ class Mplayer2 <Formula
             "--enable-apple-remote",
             "--enable-macosx-bundle",
             "--enable-macosx-finder"]
-    
+
     args << "--target=x86_64-Darwin" if snow_leopard_64?
-    
+
     system "./configure", *args
     system "make"
     system "make install"
+
+    # change the binary name to mplayer2
     FileUtils.mv(bin + 'mplayer', bin + 'mplayer2')
   end
-  
+
   def patches
     Dir.glob(File.join(File.dirname(__FILE__), "patches", "*.diff"))
   end

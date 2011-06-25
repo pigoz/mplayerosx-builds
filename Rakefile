@@ -69,18 +69,18 @@ namespace :pkg do
                       "/mplayer-git.mpBinaries.appcast.xml",
         :dsa_key => "dsa_pub.pem" })
     pkgr.bundle_mplayer
-    
+
     zipfile, time = pkgr.zip
     dsa = `openssl dgst -sha1 -binary < deploy/#{zipfile} |\
      openssl dgst -dss1 -sign ~/dsa_priv.pem | openssl enc -base64`.strip
-    
+
     appcast = ERB.new(IO.read('share/mplayer-git.mpBinaries.appcast.xml.erb'))
     locals = {:zipfile => zipfile, :time => time, :dsa => dsa,
               :size => File.size('deploy/'+zipfile)}
     File.open('sparkle/mplayer-git.mpBinaries.appcast.xml', 'w+') do |f|
       f.puts appcast.result(locals.to_binding)
     end
-    
+
     git_commit = `cd ~/Library/Caches/Homebrew/mplayer--git && \
       git log -n1 | grep ^commit. | sed -e 's/^commit.//g'`.strip
     rnotes = ERB.new(IO.read('share/mplayer-git.mpBinaries.rnotes.html.erb'))
@@ -90,7 +90,7 @@ namespace :pkg do
       f.puts rnotes.result(locals.to_binding)
     end
   end
-  
+
   task :mpb, :version do |t, args|
     require 'mppackager'
     pkgr = MPPgkr.new('share/mplayer2.app')

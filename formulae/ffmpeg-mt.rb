@@ -1,8 +1,8 @@
 require 'formula'
 
 class FfmpegMt <Formula
-  head 'git://gitorious.org/~astrange/ffmpeg/ffmpeg-mt.git', :using => :git
-  homepage 'http://gitorious.org/ffmpeg/ffmpeg-mt'
+  head 'git://git.videolan.org/ffmpeg.git', :using => :git
+  homepage 'http://www.ffmpeg.org/'
 
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
@@ -13,7 +13,7 @@ class FfmpegMt <Formula
     ENV['LD'] = ''
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
-    
+
     args = ["--prefix=#{prefix}",
             "--enable-gpl",
             "--enable-nonfree",
@@ -30,7 +30,7 @@ class FfmpegMt <Formula
             "--disable-vaapi"]
 
     args << "--arch=x86_64" if snow_leopard_64?
-    
+
     system "./configure", *args
     system "make"
     system "make install"

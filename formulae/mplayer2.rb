@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mplayer2 <Formula
-  head 'git://repo.or.cz/mplayer.git', :using => :git
-  homepage 'http://repo.or.cz/w/mplayer.git'
+  head 'git://git.mplayer2.org/mplayer2.git', :using => :git
+  homepage 'http://mplayer2.org'
 
   depends_on 'pkg-config' => :build
   depends_on 'libbs2b' => :build
@@ -18,11 +18,7 @@ class Mplayer2 <Formula
 
     args = ["--prefix=#{prefix}",
             "--cc=gcc-4.2",
-            "--disable-x11",
-            "--disable-gl",
-            "--enable-apple-remote",
-            "--enable-macosx-bundle",
-            "--enable-macosx-finder"]
+            "--enable-apple-remote"]
 
     args << "--target=x86_64-Darwin" if snow_leopard_64?
 

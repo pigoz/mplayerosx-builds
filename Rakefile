@@ -81,7 +81,7 @@ namespace :pkg do
       f.puts appcast.result(locals.to_binding)
     end
 
-    git_commit = `cd ~/Library/Caches/Homebrew/mplayer--git && \
+    git_commit = `cd ~/Library/Caches/Homebrew/mplayer2--git && \
       git log -n1 | grep ^commit. | sed -e 's/^commit.//g'`.strip
     rnotes = ERB.new(IO.read('share/mplayer-git.mpBinaries.rnotes.html.erb'))
     locals = {:time => time, :commit => git_commit}

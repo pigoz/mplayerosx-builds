@@ -18,6 +18,7 @@ class Mplayer2 <Formula
 
     args = ["--prefix=#{prefix}",
             "--cc=gcc-4.2",
+            "--enable-macosx-bundle",
             "--enable-apple-remote"]
 
     args << "--target=x86_64-Darwin" if snow_leopard_64?

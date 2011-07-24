@@ -31,7 +31,7 @@ Here is a list of bundles:
 
 Why not push these formulae to homebrew?
 ----------------------------------------------
-In time I will. When ffmpeg-mt gets merged into ffmpeg would be a good timeframe.
+I do a lot of thinkering with these formulae so I like to have them in a repository where I have full control.
 
 Issues? Comments?
 -----------------

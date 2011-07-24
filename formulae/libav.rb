@@ -1,8 +1,9 @@
 require 'formula'
 
-class FfmpegMt <Formula
-  head 'git://git.videolan.org/ffmpeg.git', :using => :git
-  homepage 'http://www.ffmpeg.org/'
+class Libav <Formula
+  head 'git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git',
+       :using => :git, :branch => 'libav'
+  homepage 'http://www.libav.org/'
 
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build

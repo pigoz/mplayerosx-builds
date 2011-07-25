@@ -11,11 +11,8 @@ require 'dylibpackager'
 class MPOSXBinPgkr < Packager
   
   def plist(options = {})
-    options[:name] ||= "mplayer.git"
-    options[:description] ||= "Bleeding edge version of the mplayer binary " <<
-                             "compiled with ffmpeg-mt, newest libass " << 
-                             "available and ordered chapters support. " <<
-                             "x86_64 and Snow Leopard only."
+    options[:name] ||= "mplayer2"
+    options[:description] ||= "MPlayer2 binary compiled with libav and libass. Available only for x86_64 platforms."
     options[:maintainer] ||= "Stefano Pigozzi"
     options[:homepage] ||= "http://github.com/pigoz/mplayerosx-builds"
     options[:identifier] ||= "com.google.code.mplayerosx-builds.git"
@@ -36,7 +33,7 @@ class MPOSXBinPgkr < Packager
       :CFBundleIdentifier => options[:identifier],
       :CFBundleExecutable => mplayer,
       :CFBundleInfoDictionaryVersion => "6.0",
-      :LSBackgroundOnly => 1
+      :LSBackgroundOnly => true
     }
     r[:SUFeedURL] = options[:appcast] if options[:appcast]
     r[:SUPublicDSAKeyFile] = options[:dsa_key] if options[:dsa_key]

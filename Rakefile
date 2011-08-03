@@ -21,7 +21,7 @@ task :build do
 end
 
 task :uninstall do
-  sh %{brew uninstall ffmpeg-mt mplayer2}
+  sh %{brew uninstall libav mplayer2}
 end
 
 task :rebuild => [:uninstall, :build] do ; end

@@ -3,8 +3,12 @@ module MPlayerBundler
     "mplayer2"
   end
   
+  def mplayer_dest_basename
+    nil
+  end
+
   def bundle_mplayer
-    lt = DylibPackager.new(Pathname.new(%x[which #{mplayer}].strip))
+    lt = DylibPackager.new(Pathname.new(%x[which #{mplayer}].strip), mplayer_dest_basename)
     lt.stage_to(self.binary_dir)
   end
 end

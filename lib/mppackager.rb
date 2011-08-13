@@ -64,7 +64,11 @@ class MPPgkr < Packager
     }
     r.to_plist
   end
-  
+
+  def mplayer_dest_basename
+    "mplayer2bin"
+  end
+
   private
   def to_exts(ary)
     (ary + ary.map(&:upcase)).sort

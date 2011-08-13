@@ -1,0 +1,27 @@
+#!/usr/bin/ruby
+# uses the system ruby so we can access ruby-cocoa
+
+require "osx/cocoa"
+
+class AppDelegate < OSX::NSObject
+  def application_openFile_(application, file)
+    launch_mplayer(file) unless file == __FILE__
+    true
+  end
+
+  private
+  def mplayer_binary
+    File.join(File.dirname(__FILE__), "mplayer2bin")
+  end
+
+  def launch_mplayer(file)
+    # calls unix exec(2) and replace the running code with mplayer2
+    exec(%Q{"#{mplayer_binary}" "#{file}"})
+  end
+end
+
+# Instantiate the shared App
+app = OSX::NSApplication.sharedApplication
+
+app.setDelegate AppDelegate.alloc.init
+app.run

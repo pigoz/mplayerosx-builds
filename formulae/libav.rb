@@ -25,9 +25,9 @@ class Libav <Formula
             "--enable-postproc",
             "--disable-devices",
             "--disable-ffmpeg",
-            "--disable-ffplay",
-            "--disable-ffserver",
-            "--disable-ffprobe",
+            "--disable-avplay",
+            "--disable-avserver",
+            "--disable-avprobe",
             "--disable-vaapi"]
 
     args << "--arch=x86_64" if snow_leopard_64?

@@ -32,6 +32,6 @@ class Mplayer2 <Formula
   end
 
   def patches
-    Dir.glob(File.join(File.dirname(__FILE__), "patches", "*.diff"))
+    Dir.glob(File.join(File.dirname(__FILE__), "patches", "*.{diff,patch}"))
   end
 end

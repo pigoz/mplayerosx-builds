@@ -15,7 +15,7 @@ class AppDelegate < OSX::NSObject
   end
 
   def launch_mplayer(file)
-    # calls unix exec(2) and replace the running code with mplayer2
+    # calls unix exec to replace the running code with mplayer
     exec(%Q{"#{mplayer_binary}" "#{file}"})
   end
 end

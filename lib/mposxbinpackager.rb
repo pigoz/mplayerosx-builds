@@ -9,7 +9,7 @@ require 'packager'
 require 'dylibpackager'
 
 class MPOSXBinPgkr < Packager
-  
+
   def plist(options = {})
     options[:name] ||= "mplayer2"
     options[:description] ||= "MPlayer2 binary compiled with libav and libass. Available only for x86_64 platforms."
@@ -18,10 +18,10 @@ class MPOSXBinPgkr < Packager
     options[:identifier] ||= "com.google.code.mplayerosx-builds.git"
     options[:svn] ||= "35000"
     options[:time] ||= Time.now
-    
+
     options[:appcast] ||= nil
     options[:dsa_key] ||= nil
-    
+
     r = {
       :CFBundleName => options[:name],
       :MPEBinaryDescription => options[:description],
@@ -37,8 +37,8 @@ class MPOSXBinPgkr < Packager
     }
     r[:SUFeedURL] = options[:appcast] if options[:appcast]
     r[:SUPublicDSAKeyFile] = options[:dsa_key] if options[:dsa_key]
-    
+
     r.to_plist
   end
-  
+
 end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'dylibpackager'
 
-binary = "mplayer"
+binary = "mplayer2"
 describe DylibPackager, "after staging #{binary}" do
 
   before :all do

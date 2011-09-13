@@ -9,7 +9,7 @@ require 'packager'
 require 'dylibpackager'
 
 class MPPgkr < Packager
-  
+
   def plist(options = {})
     options[:version] ||= Time.now.to_ver('-')
     r = {
@@ -73,13 +73,13 @@ class MPPgkr < Packager
   def to_exts(ary)
     (ary + ary.map(&:upcase)).sort
   end
-  
+
   def audio_extensions
     extensions = ['aac', 'ac3', 'aiff', 'm4a', 'mka', 'mp3', 'ogg', 'pcm',
                   'vaw', 'wav', 'waw', 'wma']
     to_exts(extensions)
   end
-  
+
   def video_extensions
     extensions = ['3gp', '3iv', 'asf', 'avi', 'cpk', 'dat', 'divx', 'dv',
                   'flac', 'fli', 'flv', 'h264', 'i263', 'm2ts', 'm4v', 'mkv',
@@ -88,7 +88,7 @@ class MPPgkr < Packager
                   'vfw', 'wmv', '*']
     to_exts(extensions)
   end
-  
+
   def subtitles_extensions
     extensions = ['aqt', 'ass', 'jss', 'rt', 'smi', 'ssa', 
                   'srt', 'sub', 'txt', 'utf']

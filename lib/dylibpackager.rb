@@ -14,6 +14,7 @@ class DylibPackager < Packager
   def cp_libraries(file, to)
     file.liblist.each do |dylib|
       dylib.cp_to(to + dylib.basename)
+      (to + dylib.basename).chmod(0755)
       cp_libraries(to + dylib.basename, to)
     end
   end

@@ -98,7 +98,7 @@ namespace :pkg do
     args.with_defaults(:version => Time.now.to_ver('-'))
     pkgr.make_plist(args)
     pkgr.bundle_mplayer
-    (pkgr.binary_dir + "mplayer2").make_executable
+    (pkgr.binary_dir + "mplayer2").chmod(0755)
   end
 end
 

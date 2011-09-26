@@ -4,7 +4,7 @@ class DylibPackager < Packager
 
   def stage_to(dest_dir)
     dest_dir, dest_file = super(dest_dir)
-    dest_file.make_executable
+    dest_file.chmod(0755)
 
     cp_libraries(dest_file, dest_dir + 'lib')
     fix_libraries(dest_file, dest_dir + 'lib')

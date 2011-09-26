@@ -1,10 +1,6 @@
 class Pathname
   alias_method :/, :+
   
-  def make_executable
-    chmod(stat.mode|00100) if exist? and not executable?
-  end
-  
   def cp_to(dest)
     FileUtils.rm_r(dest, :force => true)
     FileUtils.cp_r(self, dest)

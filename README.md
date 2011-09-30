@@ -43,4 +43,4 @@ Send me a pull request for small changes otherwise contact me by mail or IRC.
 
 Contacts
 ========
-Drop me a mail at stefano.pigozzi@gmail.com, [follow me](http://twitter.com/pigoz) on twitter or find me on IRC (pgz` on rizon and freenode)
+Drop me a mail at stefano.pigozzi@gmail.com, [follow me](http://twitter.com/pigoz) on twitter or find me on IRC (pigoz on rizon and freenode)

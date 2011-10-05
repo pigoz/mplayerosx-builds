@@ -5,8 +5,12 @@ class Pathname
     FileUtils.rm_r(dest, :force => true)
     FileUtils.cp_r(self, dest)
   rescue Errno::ENOENT
-    FileUtils.mkdir_p(dest.dirname)
-    retry
+    unless exist?
+      onoe "#{self} is referenced but does not exist"
+    else
+      FileUtils.mkdir_p(dest.dirname)
+      retry
+    end
   end
   
   def liblist

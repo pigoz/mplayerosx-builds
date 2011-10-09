@@ -6,6 +6,7 @@ class Libass < Formula
   sha1 "82bfda2b78f74cf75a4dd0283d090ad1a71a697f"
 
   depends_on 'pkg-config' => :build
+  depends_on File.join(File.dirname(__FILE__), 'fribidi.rb') => :build
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

@@ -1,8 +1,7 @@
 require 'formula'
 
 class Libav <Formula
-  head 'git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git',
-       :using => :git, :branch => 'libav'
+  head 'git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git', :using => :git
   homepage 'http://www.libav.org/'
 
   depends_on 'pkg-config' => :build

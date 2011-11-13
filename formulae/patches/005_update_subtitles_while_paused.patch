@@ -1,0 +1,60 @@
+From 3d24724ffbf0cba4da2011712921a26a704f0800 Mon Sep 17 00:00:00 2001
+From: wm4 <wm4@mplayer2.org>
+Date: Mon, 17 Oct 2011 23:40:02 +0000
+Subject: Update subtitles while paused
+
+The player should re-render subtitles when the player window size is
+changed, even when the video is paused, just like the normal OSD.
+Not doing this looks crappy.
+
+This requires two hacks:
+1. The subtitles are rendered twice. This is because the VO API makes
+   updating the subtitle images and rendering them on screen the same
+   operation.
+2. The render code has to save the PTS of the subtitles, because there
+   doesn't seem to be any good way to get it from within the video filter
+   and VO code when paused.
+---
+diff --git a/libmpcodecs/dec_video.c b/libmpcodecs/dec_video.c
+index 91b2551..fc9bb8e 100644
+--- a/libmpcodecs/dec_video.c
++++ b/libmpcodecs/dec_video.c
+@@ -198,6 +198,9 @@ int set_rectangle(sh_video_t *sh_video, int param, int value)
+ int redraw_osd(struct sh_video *sh_video, struct osd_state *osd)
+ {
+     struct vf_instance *vf = sh_video->vfilter;
++    // xxx: eosd gets redrawn twice; but we need this DRAW_EOSD to re-render
++    //      the subtitle to deal with resolution changes
++    vf->control(vf, VFCTRL_DRAW_EOSD, osd);
+     if (vf->control(vf, VFCTRL_REDRAW_OSD, osd) == true)
+         return 0;
+     return -1;
+diff --git a/libmpcodecs/vf_vo.c b/libmpcodecs/vf_vo.c
+index 7a4a967..1b01c1d 100644
+--- a/libmpcodecs/vf_vo.c
++++ b/libmpcodecs/vf_vo.c
+@@ -156,6 +156,9 @@ static int control(struct vf_instance *vf, int request, void* data)
+         double pts = video_out->next_pts;
+         ASS_Renderer *renderer;
+         double scale;
++        if (pts == MP_NOPTS_VALUE)
++            pts = video_out->eosd_previous_pts;
++        video_out->eosd_previous_pts = pts;
+         if (osd->vsfilter_aspect && vf->opts->ass_vsfilter_aspect_compat) {
+             renderer = vf->priv->renderer_vsfilter;
+             scale = vf->priv->scale_ratio;
+diff --git a/libvo/video_out.h b/libvo/video_out.h
+index d1a2a7f..e33156a 100644
+--- a/libvo/video_out.h
++++ b/libvo/video_out.h
+@@ -242,6 +242,8 @@ struct vo {
+     double next_pts;    // pts value of the next frame if any
+     double next_pts2;   // optional pts of frame after that
+ 
++    double eosd_previous_pts; // pts of the last eosd subtitle that was rendered
++
+     double flip_queue_offset; // queue flip events at most this much in advance
+ 
+     const struct vo_driver *driver;
+--
+cgit v0.9

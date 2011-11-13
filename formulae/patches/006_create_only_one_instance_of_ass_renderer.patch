@@ -1,0 +1,198 @@
+From 1077052e61ef0d59162b611115e41f7650d75424 Mon Sep 17 00:00:00 2001
+From: wm4 <wm4@mplayer2.org>
+Date: Fri, 11 Nov 2011 12:25:47 +0000
+Subject: subtitles: create only one instance of ASS_Render instead of two
+
+This simplifies the code. It also can make loading of mkv files faster, as
+initializing two ASS_Render instances required scanning mkv font
+attachments twice.
+---
+diff --git a/libmpcodecs/vf_ass.c b/libmpcodecs/vf_ass.c
+index c5613ce..87d41fb 100644
+--- a/libmpcodecs/vf_ass.c
++++ b/libmpcodecs/vf_ass.c
+@@ -61,8 +61,9 @@ static const struct vf_priv_s {
+     int auto_insert;
+ 
+     struct osd_state *osd;
+-    ASS_Renderer *renderer_realaspect;
+-    ASS_Renderer *renderer_vsfilter;
++    ASS_Renderer *renderer;
++
++    double realaspect;
+ 
+     unsigned char *planes[3];
+     struct line_limits {
+@@ -93,14 +94,10 @@ static int config(struct vf_instance *vf,
+     vf->priv->planes[2]   = malloc(vf->priv->outw * vf->priv->outh);
+     vf->priv->line_limits = malloc((vf->priv->outh + 1) / 2 * sizeof(*vf->priv->line_limits));
+ 
+-    if (vf->priv->renderer_realaspect) {
+-        mp_ass_configure(vf->priv->renderer_realaspect, opts,
+-                         vf->priv->outw, vf->priv->outh, 0);
+-        mp_ass_configure(vf->priv->renderer_vsfilter, opts,
++    if (vf->priv->renderer) {
++        mp_ass_configure(vf->priv->renderer, opts,
+                          vf->priv->outw, vf->priv->outh, 0);
+-        ass_set_aspect_ratio(vf->priv->renderer_realaspect,
+-                             (double)width / height * d_height / d_width, 1);
+-        ass_set_aspect_ratio(vf->priv->renderer_vsfilter, 1, 1);
++        vf->priv->realaspect = (double)width / height * d_height / d_width;
+     }
+ 
+     return vf_next_config(vf, vf->priv->outw, vf->priv->outh, d_width,
+@@ -363,17 +360,16 @@ static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+ {
+     struct osd_state *osd = vf->priv->osd;
+     ASS_Image *images = 0;
+-    ASS_Renderer *renderer = osd->vsfilter_aspect
++    double scale = osd->vsfilter_aspect
+             && vf->opts->ass_vsfilter_aspect_compat
+-            ? vf->priv->renderer_vsfilter : vf->priv->renderer_realaspect;
+-    if (sub_visibility && renderer && osd->ass_track
++            ? 1 : vf->priv->realaspect;
++    if (sub_visibility && vf->priv->renderer && osd->ass_track
+             && (pts != MP_NOPTS_VALUE)) {
+-        if (osd->ass_force_reload) {
+-            mp_ass_reload_options(vf->priv->renderer_realaspect, vf->opts);
+-            mp_ass_reload_options(vf->priv->renderer_vsfilter, vf->opts);
+-        }
++        ass_set_aspect_ratio(vf->priv->renderer, scale, 1);
++        if (osd->ass_force_reload)
++            mp_ass_reload_options(vf->priv->renderer, vf->opts);
+         osd->ass_force_reload = false;
+-        images = ass_render_frame(renderer, osd->ass_track,
++        images = ass_render_frame(vf->priv->renderer, osd->ass_track,
+                                   (pts + sub_delay) * 1000 + .5, NULL);
+     }
+ 
+@@ -402,19 +398,13 @@ static int control(vf_instance_t *vf, int request, void *data)
+         vf->priv->osd = data;
+         break;
+     case VFCTRL_INIT_EOSD:
+-        vf->priv->renderer_realaspect = ass_renderer_init((ASS_Library *)data);
+-        if (!vf->priv->renderer_realaspect)
++        vf->priv->renderer = ass_renderer_init((ASS_Library *)data);
++        if (!vf->priv->renderer)
+             return CONTROL_FALSE;
+-        vf->priv->renderer_vsfilter = ass_renderer_init((ASS_Library *)data);
+-        if (!vf->priv->renderer_vsfilter) {
+-            ass_renderer_done(vf->priv->renderer_realaspect);
+-            return CONTROL_FALSE;
+-        }
+-        mp_ass_configure_fonts(vf->priv->renderer_realaspect);
+-        mp_ass_configure_fonts(vf->priv->renderer_vsfilter);
++        mp_ass_configure_fonts(vf->priv->renderer);
+         return CONTROL_TRUE;
+     case VFCTRL_DRAW_EOSD:
+-        if (vf->priv->renderer_realaspect)
++        if (vf->priv->renderer)
+             return CONTROL_TRUE;
+         break;
+     }
+@@ -423,10 +413,8 @@ static int control(vf_instance_t *vf, int request, void *data)
+ 
+ static void uninit(struct vf_instance *vf)
+ {
+-    if (vf->priv->renderer_realaspect) {
+-        ass_renderer_done(vf->priv->renderer_realaspect);
+-        ass_renderer_done(vf->priv->renderer_vsfilter);
+-    }
++    if (vf->priv->renderer)
++        ass_renderer_done(vf->priv->renderer);
+     free(vf->priv->planes[1]);
+     free(vf->priv->planes[2]);
+     free(vf->priv->line_limits);
+diff --git a/libmpcodecs/vf_vo.c b/libmpcodecs/vf_vo.c
+index 1b01c1d..ba4f3ee 100644
+--- a/libmpcodecs/vf_vo.c
++++ b/libmpcodecs/vf_vo.c
+@@ -40,8 +40,7 @@ extern float sub_delay;
+ struct vf_priv_s {
+     struct vo *vo;
+ #ifdef CONFIG_ASS
+-    ASS_Renderer *renderer_realaspect;
+-    ASS_Renderer *renderer_vsfilter;
++    ASS_Renderer *renderer;
+     bool prev_visibility;
+     double scale_ratio;
+ #endif
+@@ -85,10 +84,8 @@ static int config(struct vf_instance *vf,
+ #ifdef CONFIG_ASS
+     vf->priv->scale_ratio = (double) d_width / d_height * height / width;
+ 
+-    if (vf->priv->renderer_realaspect) {
+-	mp_ass_configure(vf->priv->renderer_realaspect, vf->opts, width, height,
+-                         vf->default_caps & VFCAP_EOSD_UNSCALED);
+-	mp_ass_configure(vf->priv->renderer_vsfilter, vf->opts, width, height,
++    if (vf->priv->renderer) {
++	mp_ass_configure(vf->priv->renderer, vf->opts, width, height,
+                          vf->default_caps & VFCAP_EOSD_UNSCALED);
+     }
+ #endif
+@@ -136,16 +133,10 @@ static int control(struct vf_instance *vf, int request, void* data)
+ #ifdef CONFIG_ASS
+     case VFCTRL_INIT_EOSD:
+     {
+-        vf->priv->renderer_realaspect = ass_renderer_init(data);
+-        if (!vf->priv->renderer_realaspect)
+-            return CONTROL_FALSE;
+-        vf->priv->renderer_vsfilter = ass_renderer_init(data);
+-        if (!vf->priv->renderer_vsfilter) {
+-            ass_renderer_done(vf->priv->renderer_realaspect);
++        vf->priv->renderer = ass_renderer_init(data);
++        if (!vf->priv->renderer)
+             return CONTROL_FALSE;
+-        }
+-        mp_ass_configure_fonts(vf->priv->renderer_realaspect);
+-        mp_ass_configure_fonts(vf->priv->renderer_vsfilter);
++        mp_ass_configure_fonts(vf->priv->renderer);
+         vf->priv->prev_visibility = false;
+         return CONTROL_TRUE;
+     }
+@@ -154,16 +145,14 @@ static int control(struct vf_instance *vf, int request, void* data)
+         struct osd_state *osd = data;
+         mp_eosd_images_t images = {NULL, 2};
+         double pts = video_out->next_pts;
+-        ASS_Renderer *renderer;
++        ASS_Renderer *renderer = vf->priv->renderer;
+         double scale;
+         if (pts == MP_NOPTS_VALUE)
+             pts = video_out->eosd_previous_pts;
+         video_out->eosd_previous_pts = pts;
+         if (osd->vsfilter_aspect && vf->opts->ass_vsfilter_aspect_compat) {
+-            renderer = vf->priv->renderer_vsfilter;
+             scale = vf->priv->scale_ratio;
+         } else {
+-            renderer = vf->priv->renderer_realaspect;
+             scale = 1;
+         }
+         if (!video_out->config_ok || !renderer)
+@@ -179,10 +168,8 @@ static int control(struct vf_instance *vf, int request, void* data)
+                 ass_set_aspect_ratio(renderer, scale, 1);
+             }
+ 
+-            if (osd->ass_force_reload) {
+-                mp_ass_reload_options(vf->priv->renderer_realaspect, vf->opts);
+-                mp_ass_reload_options(vf->priv->renderer_vsfilter, vf->opts);
+-            }
++            if (osd->ass_force_reload)
++                mp_ass_reload_options(vf->priv->renderer, vf->opts);
+             images.imgs = ass_render_frame(renderer, osd->ass_track,
+                                            (pts+sub_delay) * 1000 + .5,
+                                            &images.changed);
+@@ -255,10 +242,8 @@ static void uninit(struct vf_instance *vf)
+          * to get rid of numbered-mpi references that will now be invalid. */
+         vo_seek_reset(video_out);
+ #ifdef CONFIG_ASS
+-        if (vf->priv->renderer_realaspect) {
+-            ass_renderer_done(vf->priv->renderer_realaspect);
+-            ass_renderer_done(vf->priv->renderer_vsfilter);
+-        }
++        if (vf->priv->renderer)
++            ass_renderer_done(vf->priv->renderer);
+ #endif
+         free(vf->priv);
+     }
+--
+cgit v0.9

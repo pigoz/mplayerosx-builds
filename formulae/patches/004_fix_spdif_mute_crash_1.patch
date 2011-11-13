@@ -1,0 +1,27 @@
+From c289c3b77ce4977d1dac7d8419472a48101585a9 Mon Sep 17 00:00:00 2001
+From: reimar <reimar@b3059339-0415-0410-9bf9-f77b7e298cf2>
+Date: Sun, 23 Oct 2011 12:03:13 +0000
+Subject: Fix possible crash since RenderCallbackSPDIF might call read_buffer with NULL data.
+
+The purpose of that is to drain data from the buffer when the output is muted.
+
+
+git-svn-id: svn://svn.mplayerhq.hu/mplayer/trunk@34241 b3059339-0415-0410-9bf9-f77b7e298cf2
+---
+diff --git a/libao2/ao_coreaudio.c b/libao2/ao_coreaudio.c
+index 61323c1..c98eaf8 100644
+--- a/libao2/ao_coreaudio.c
++++ b/libao2/ao_coreaudio.c
+@@ -133,7 +133,10 @@ static int write_buffer(unsigned char* data, int len){
+ static int read_buffer(unsigned char* data,int len){
+   int buffered = av_fifo_size(ao->buffer);
+   if (len > buffered) len = buffered;
++  if (data)
+   av_fifo_generic_read(ao->buffer, data, len, NULL);
++  else
++    av_fifo_drain(ao->buffer, len);
+   return len;
+ }
+ 
+--
+cgit v0.9

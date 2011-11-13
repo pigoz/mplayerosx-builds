@@ -13,6 +13,7 @@ class Mplayer2 <Formula
     ENV.gcc_4_2
     ENV['CC'] = ''
     ENV['LD'] = ''
+    ENV['LDFLAGS'] = "-headerpad_max_install_names"
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 

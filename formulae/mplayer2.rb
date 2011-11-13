@@ -19,6 +19,8 @@ class Mplayer2 <Formula
 
     args = ["--prefix=#{prefix}",
             "--cc=gcc-4.2",
+            "--disable-x11",
+            "--disable-sdl",
             "--enable-macosx-bundle",
             "--enable-apple-remote"]
 

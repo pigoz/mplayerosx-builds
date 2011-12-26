@@ -17,7 +17,7 @@ task :build do
     onoe "Can't find homebrew installed on your system. Is brew in your path?"
     exit!
   end
-  sh %{brew install #{(Pathname.pwd / 'formulae' / 'mplayer2.rb').realpath}}
+  sh %{brew install --HEAD #{(Pathname.pwd / 'formulae' / 'mplayer2.rb').realpath}}
 end
 
 task :uninstall do

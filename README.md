@@ -13,9 +13,10 @@ If you are familiar with homebrew you can use my formulae directly; otherwise yo
 
     git clone -b master git://github.com/pigoz/mplayerosx-builds.git
     cd mplayerosx-builds
-    rake build
+    rake install
 
-After a while your mplayer will be compiled, installed to the Cellar and symlinked to `/usr/local/bin`.
+After a while your mplayer2 will be compiled, installed to the Cellar and symlinked to `/usr/local/bin`.
+If you already installed mplayer2 and libav through `rake install`, and you want to upgrade your installation to the current git HEAD, run `rake upgrade`.
 
 Making Mac OSX Bundles
 ----------------------

@@ -12,19 +12,33 @@ rescue LoadError
   exit
 end
 
-task :build do
+def ordered_formulae
+  ['libav', 'mplayer2']
+end
+
+def formulae_action(action)
   if %x[which brew].strip.empty? then
     onoe "Can't find homebrew installed on your system. Is brew in your path?"
     exit!
   end
-  sh %{brew install #{(Pathname.pwd / 'formulae' / 'mplayer2.rb').realpath}}
+  ordered_formulae.each do |formula|
+    sh %{brew #{action} --HEAD #{(Pathname.pwd / 'formulae' / "#{formula}.rb").realpath}}
+  end
+end
+
+task :install do
+  formulae_action("install")
+end
+
+task :upgrade do
+  formulae_action("upgrade")
 end
 
 task :uninstall do
-  sh %{brew uninstall libav mplayer2}
+  sh %{brew uninstall fridibi libass libav mplayer2}
 end
 
-task :rebuild => [:uninstall, :build] do ; end
+task :reinstall => [:uninstall, :build] do ; end
 
 namespace :sparkle do
   task :clear do

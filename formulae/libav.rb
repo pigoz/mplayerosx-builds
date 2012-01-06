@@ -1,4 +1,5 @@
 require 'formula'
+require File.join(File.dirname(__FILE__), 'ENV.rb')
 
 class Libav <Formula
   head 'git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git', :using => :git
@@ -8,6 +9,7 @@ class Libav <Formula
   depends_on 'yasm' => :build
 
   def install
+    ENV.local_gcc
     ENV['CC'] = ''
     ENV['LD'] = ''
     ENV['CFLAGS'] = ''

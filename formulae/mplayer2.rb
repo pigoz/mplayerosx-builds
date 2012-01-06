@@ -7,10 +7,11 @@ class Mplayer2 <Formula
   depends_on 'pkg-config' => :build
   depends_on 'libbs2b' => :build
   depends_on 'libass' => :build
+  depends_on 'https://raw.github.com/adamv/homebrew-alt/master/duplicates/freetype.rb' => :build
+  depends_on 'https://raw.github.com/adamv/homebrew-alt/master/duplicates/apple-gcc42.rb' => :build
   depends_on File.join(File.dirname(__FILE__), 'libav.rb') => :build
 
   def install
-    ENV.gcc_4_2
     ENV['CC'] = ''
     ENV['LD'] = ''
     ENV['LDFLAGS'] = "-headerpad_max_install_names"

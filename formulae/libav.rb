@@ -8,13 +8,13 @@ class Libav <Formula
   depends_on 'yasm' => :build
 
   def install
-    ENV.gcc_4_2
     ENV['CC'] = ''
     ENV['LD'] = ''
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
     args = ["--prefix=#{prefix}",
+            "--cc=gcc-4.2",
             "--enable-gpl",
             "--enable-nonfree",
             "--disable-indev=jack",

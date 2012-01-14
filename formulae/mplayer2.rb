@@ -8,7 +8,7 @@ class Mplayer2 <Formula
     end
 
     def in_path?(binary)
-      `which #{binary}`.strip == ""
+      `which #{binary}`.strip != ""
     end
   end
 
@@ -24,7 +24,7 @@ class Mplayer2 <Formula
 
   # try to build apple's gcc if it isn't in the path
   cond_depends_on 'https://raw.github.com/adamv/homebrew-alt/master/' \
-                  'duplicates/apple-gcc42.rb' do in_path? 'gcc-4.2' end
+                  'duplicates/apple-gcc42.rb' do not in_path? 'gcc-4.2' end
 
   depends_on File.join(File.dirname(__FILE__), 'libav.rb') => :build
 

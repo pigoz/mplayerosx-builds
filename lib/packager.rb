@@ -65,6 +65,6 @@ class Packager
 
   private
   def zip_filename(time=Time.now)
-    "mplayer-git-#{time.to_ver("-")}.zip"
+    "mplayer2-#{time.to_ver("-")}.zip"
   end
 end

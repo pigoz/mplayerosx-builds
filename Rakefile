@@ -55,11 +55,11 @@ namespace :pkg do
   # Rake task to create a personal/testing version of the bundle
   task :mposxt do
     require 'mposxbinpackager'
-    pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries',
-                            'mplayer-git-local.mpBinaries')
+    pkgr = MPOSXBinPgkr.new('share/mplayer2.mpBinaries',
+                            'mplayer2-local.mpBinaries')
     pkgr.stage_to('deploy')
     pkgr.make_plist({
-      :name => "mplayer.git (local)",
+      :name => "mplayer2 (local)",
       :identifier => "com.google.code.mplayerosx-builds.git.local"
     })
     pkgr.bundle_mplayer
@@ -69,7 +69,7 @@ namespace :pkg do
   task :mposxd do
     require 'erb'
     require 'mposxbinpackager'
-    pkgr = MPOSXBinPgkr.new('share/mplayer-git.mpBinaries')
+    pkgr = MPOSXBinPgkr.new('share/mplayer2.mpBinaries')
     pkgr.stage_to('deploy')
     pkgr.add_key('~/dsa_pub.pem')
     pkgr.make_plist({
@@ -82,7 +82,7 @@ namespace :pkg do
     dsa = `openssl dgst -sha1 -binary < deploy/#{zipfile} |\
      openssl dgst -dss1 -sign ~/dsa_priv.pem | openssl enc -base64`.strip
 
-    appcast = ERB.new(IO.read('share/mplayer-git.mpBinaries.appcast.xml.erb'))
+    appcast = ERB.new(IO.read('share/mplayer2.mpBinaries.appcast.xml.erb'))
     locals = {:zipfile => zipfile, :time => time, :dsa => dsa,
               :size => File.size('deploy/'+zipfile)}
     File.open('sparkle/mplayer-git.mpBinaries.appcast.xml', 'w+') do |f|
@@ -91,7 +91,7 @@ namespace :pkg do
 
     git_commit = `cd ~/Library/Caches/Homebrew/mplayer2--git && \
       git log -n1 | grep ^commit. | sed -e 's/^commit.//g'`.strip
-    rnotes = ERB.new(IO.read('share/mplayer-git.mpBinaries.rnotes.html.erb'))
+    rnotes = ERB.new(IO.read('share/mplayer2.mpBinaries.rnotes.html.erb'))
     locals = {:time => time, :commit => git_commit}
     File.open("sparkle/mplayer-git.mpBinaries.rnotes/#{time.to_ver("-")}.html",
               'w+') do |f|

@@ -4,7 +4,7 @@
 require "osx/cocoa"
 
 class AppDelegate < OSX::NSObject
-  def application_openFiles_(application, files)
+  def application_openFiles(application, files)
     launch_mplayer(files.to_ruby.reject {|f| f == __FILE__})
     true
   end

@@ -25,7 +25,6 @@ class Libav <Formula
             "--enable-shared",
             "--enable-postproc",
             "--disable-devices",
-            "--disable-ffmpeg",
             "--disable-avserver",
             "--disable-avprobe",
             "--disable-vaapi"]

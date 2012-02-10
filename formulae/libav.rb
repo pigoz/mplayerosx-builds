@@ -1,5 +1,4 @@
 require 'formula'
-require File.join(File.dirname(__FILE__), 'ENV.rb')
 
 class Libav <Formula
   head 'git://git.libav.org/libav.git', :using => :git
@@ -9,14 +8,8 @@ class Libav <Formula
   depends_on 'yasm' => :build
 
   def install
-    ENV.local_gcc
-    ENV['CC'] = ''
-    ENV['LD'] = ''
-    ENV['CFLAGS'] = ''
-    ENV['CXXFLAGS'] = ''
-
     args = ["--prefix=#{prefix}",
-            "--cc=gcc-4.2",
+            "--cc=clang",
             "--enable-gpl",
             "--enable-nonfree",
             "--disable-indev=jack",

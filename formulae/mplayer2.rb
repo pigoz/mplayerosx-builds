@@ -1,5 +1,4 @@
 require 'formula'
-require File.join(File.dirname(__FILE__), 'ENV.rb')
 
 class Mplayer2 <Formula
   class << self
@@ -22,22 +21,11 @@ class Mplayer2 <Formula
   depends_on 'https://raw.github.com/adamv/homebrew-alt/master/' \
              'duplicates/freetype.rb' => :build
 
-  # try to build apple's gcc if it isn't in the path
-  cond_depends_on 'https://raw.github.com/adamv/homebrew-alt/master/' \
-                  'duplicates/apple-gcc42.rb' do not in_path? 'gcc-4.2' end
-
   depends_on File.join(File.dirname(__FILE__), 'libav.rb') => :build
 
   def install
-    ENV.local_gcc
-    ENV['CC'] = ''
-    ENV['LD'] = ''
-    ENV['LDFLAGS'] = "-headerpad_max_install_names"
-    ENV['CFLAGS'] = ''
-    ENV['CXXFLAGS'] = ''
-
     args = ["--prefix=#{prefix}",
-            "--cc=gcc-4.2",
+            "--cc=clang",
             "--disable-x11",
             "--disable-sdl",
             "--enable-macosx-bundle",

@@ -12,7 +12,7 @@ class Mplayer2 <Formula
     end
   end
 
-  head 'git://git.mplayer2.org/mplayer2.git', :using => :git
+  head 'git://git.mplayer2.org/mplayer2.git', :using => :git, :branch => 'libav_api_update'
   homepage 'http://mplayer2.org'
 
   depends_on 'pkg-config' => :build

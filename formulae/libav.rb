@@ -2,7 +2,7 @@ require 'formula'
 require File.join(File.dirname(__FILE__), 'ENV.rb')
 
 class Libav <Formula
-  head 'git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git', :using => :git
+  head 'git://git.libav.org/libav.git', :using => :git
   homepage 'http://www.libav.org/'
 
   depends_on 'pkg-config' => :build

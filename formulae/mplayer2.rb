@@ -1,7 +1,8 @@
 require 'formula'
 
 class Mplayer2 <Formula
-  head 'git://git.mplayer2.org/mplayer2.git', :using => :git
+  head 'git://git.mplayer2.org/pigoz/mplayer2.git', :using => :git,
+    :branch => 'binary'
   homepage 'http://mplayer2.org'
 
   depends_on 'pkg-config' => :build
@@ -15,7 +16,6 @@ class Mplayer2 <Formula
   def install
     args = ["--prefix=#{prefix}",
             "--cc=clang",
-            "--disable-x11",
             "--disable-sdl",
             "--enable-macosx-bundle",
             "--enable-apple-remote"]

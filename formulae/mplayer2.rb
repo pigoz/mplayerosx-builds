@@ -1,16 +1,6 @@
 require 'formula'
 
 class Mplayer2 <Formula
-  class << self
-    def cond_depends_on(path)
-      depends_on path => :build if yield
-    end
-
-    def in_path?(binary)
-      `which #{binary}`.strip != ""
-    end
-  end
-
   head 'git://git.mplayer2.org/mplayer2.git', :using => :git, :branch => 'libav_api_update'
   homepage 'http://mplayer2.org'
 

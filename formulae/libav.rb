@@ -1,7 +1,9 @@
 require 'formula'
 
 class Libav <Formula
-  head 'git://git.libav.org/libav.git', :using => :git
+  head 'git://git.libav.org/libav.git',
+    :using => :git,
+    :ref => "01cb62aba2503b4173f101154f9f840f04f9c7f8"
   homepage 'http://www.libav.org/'
 
   depends_on 'pkg-config' => :build
@@ -11,15 +13,12 @@ class Libav <Formula
     args = ["--prefix=#{prefix}",
             "--cc=clang",
             "--enable-gpl",
-            "--enable-nonfree",
-            "--disable-indev=jack",
             "--disable-debug",
             "--enable-pthreads",
             "--enable-shared",
             "--enable-postproc",
             "--disable-devices",
-            "--disable-avserver",
-            "--disable-avprobe",
+            "--enable-vda",
             "--disable-vaapi"]
 
     args << "--arch=x86_64" if snow_leopard_64?

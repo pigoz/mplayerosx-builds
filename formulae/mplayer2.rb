@@ -21,7 +21,7 @@ class Mplayer2 <Formula
   depends_on 'https://raw.github.com/adamv/homebrew-alt/master/' \
              'duplicates/freetype.rb' => :build
 
-  depends_on File.join(File.dirname(__FILE__), 'libav.rb') => :build
+  depends_on File.join(File.dirname(__FILE__), 'ffmpeg.rb') => :build
 
   def install
     args = ["--prefix=#{prefix}",

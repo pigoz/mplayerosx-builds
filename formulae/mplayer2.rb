@@ -18,6 +18,7 @@ class Mplayer2 <Formula
             "--cc=clang",
             "--disable-sdl",
             "--disable-x11",
+            "--enable-macosx-finder",
             "--enable-macosx-bundle",
             "--enable-apple-remote"]
 

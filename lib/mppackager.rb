@@ -66,7 +66,7 @@ class MPPgkr < Packager
   end
 
   def mplayer_dest_basename
-    "mplayer2bin"
+    "mplayer2"
   end
 
   private

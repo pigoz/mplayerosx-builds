@@ -20,7 +20,7 @@ class Mplayer2 <Formula
             "--enable-macosx-bundle",
             "--enable-apple-remote"]
 
-    args << "--target=x86_64-Darwin" if MacOS.prefer_64_bit?
+    args << "--target=x86_64-apple-darwin" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make"

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mplayer2 <Formula
-  head 'git://git.mplayer2.org/mplayer2.git', :using => :git, :branch => 'libav_api_update'
+  head 'git://git.mplayer2.org/mplayer2.git', :using => :git
   homepage 'http://mplayer2.org'
 
   depends_on 'pkg-config' => :build

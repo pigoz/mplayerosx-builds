@@ -16,8 +16,7 @@ class Libav <Formula
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
-            "--enable-libfreetype",
-            "--enable-postproc"]
+            "--enable-libfreetype"]
 
     args << "--arch=x86_64" if snow_leopard_64?
 

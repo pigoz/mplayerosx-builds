@@ -1,7 +1,7 @@
 require 'formula'
 
-class Ffmpeg <Formula
-  head 'git://git.videolan.org/ffmpeg.git', :using => :git
+class Libav <Formula
+  head 'git://git.libav.org/libav.git', :using => :git
   homepage 'http://www.libav.org/'
 
   depends_on 'pkg-config' => :build

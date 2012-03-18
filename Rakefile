@@ -27,7 +27,7 @@ task :install do
 end
 
 task :uninstall do
-  brew_action "uninstall ffmpeg mplayer2"
+  brew_action "uninstall libav mplayer2"
 end
 
 task :reinstall => [:uninstall, :install] do ; end

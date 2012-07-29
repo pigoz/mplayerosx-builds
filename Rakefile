@@ -23,6 +23,7 @@ def brew_action *actions
 end
 
 task :install do
+  brew_action "install --HEAD #{(Pathname.pwd / 'formulae' / "libav.rb").realpath}"
   brew_action "install --HEAD #{(Pathname.pwd / 'formulae' / "mplayer2.rb").realpath}"
 end
 

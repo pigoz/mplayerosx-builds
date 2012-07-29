@@ -8,7 +8,8 @@ class Mplayer2 <Formula
   depends_on 'libbs2b' => :build
   depends_on 'libass' => :build
 
-  depends_on 'https://raw.github.com/Homebrew/homebrew-dupes/master/freetype.rb'
+  depends_on 'homebrew/dupes/freetype' => :build
+  depends_on 'fontconfig' => :build
 
   depends_on File.join(File.dirname(__FILE__), 'libav.rb') => :build
 

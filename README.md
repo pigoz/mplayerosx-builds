@@ -30,6 +30,12 @@ Here is a list of bundles:
  *  `rake pkg:mpb[$version]`: makes a standalone binary `mplayer2.app` that you can drop to your Applications directory. If version is not provided the current date is used.
  *  `rake pkg:mposxt`: makes a mpBinaries bundle that works with MPlayerOSX Extended.
 
+Requirements
+------------
+ *  Command Line Tools for Xcode
+ *  XQuartz (OS X 10.8)
+ *  `brew tap homebrew/dupes`
+
 Why not push these formulae to homebrew?
 ----------------------------------------------
 I do a lot of thinkering with these formulae so I like to have them in a repository where I have full control.

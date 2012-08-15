@@ -1,26 +1,24 @@
 mplayerosx-builds
 =================
-mplayerosx-builds is a collection of scripts that I use to compile [mplayer2](http://www.mplayer2.org/) on the Mac.
-This project uses custom [mxcl/homebrew](http://github.com/mxcl/homebrew) formulae for compilation and dependency management.
+mplayerosx-builds is a collection of scripts I use to make make Mac OS X
+Application Bundles of [mplayer2](http://www.mplayer2.org/).
 
-Where to get binaries now?
---------------------------
-The binaries are on [Google code](http://code.google.com/p/mplayerosx-builds/). The rest of project (i.e.: scripts for producing the binaries, wiki articles, etc) is in the process of being moved to this GitHub project.
+Originally this project contained custom [mxcl/homebrew](http://github.com/mxcl/homebrew)
+formulae for compilation and dependency management, but they have since
+then been moved to [pigoz/homebrew-mplayer2](https://github.com/pigoz/homebrew-mplayer2)
+to make use of the new tap functionality available in Homebrew 0.9+.
 
-Actually, I really wanna build from source
+I want to get binaries. Where are they?
+---------------------------------------
+The binaries are on [Google code](http://code.google.com/p/mplayerosx-builds/).
+
+I want to build from source. What do I do?
 ------------------------------------------
-If you are familiar with homebrew you can use my formulae directly; otherwise you can use the provided rake task:
-
-    git clone -b master git://github.com/pigoz/mplayerosx-builds.git
-    cd mplayerosx-builds
-    rake install
-
-After a while your mplayer2 will be compiled, installed to the Cellar and symlinked to `/usr/local/bin`.
-If you already installed mplayer2 and libav through `rake install`, and you want to upgrade your installation to the current git HEAD, run `rake upgrade`.
+Head to [pigoz/homebrew-mplayer2](https://github.com/pigoz/homebrew-mplayer2)        
 
 Making Mac OSX Bundles
 ----------------------
-You can make different types of bundles, they all have a few things in common:
+Once you have compiled mplayer2 from source, you can make different types of bundles, they all have a few things in common:
 
  *  the bundle is created in the `deploy/` directory
  *  the mplayer binary used in the bundle is the first in your path (the one listed by the `which` unix command).
@@ -29,16 +27,6 @@ Here is a list of bundles:
 
  *  `rake pkg:mpb[$version]`: makes a standalone binary `mplayer2.app` that you can drop to your Applications directory. If version is not provided the current date is used.
  *  `rake pkg:mposxt`: makes a mpBinaries bundle that works with MPlayerOSX Extended.
-
-Requirements
-------------
- *  Command Line Tools for Xcode
- *  XQuartz (OS X 10.8)
- *  `brew tap homebrew/dupes`
-
-Why not push these formulae to homebrew?
-----------------------------------------------
-I do a lot of thinkering with these formulae so I like to have them in a repository where I have full control.
 
 Issues? Comments?
 -----------------

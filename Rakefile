@@ -12,34 +12,11 @@ rescue LoadError
   exit
 end
 
-def brew_action *actions
-  if %x[which brew].strip.empty? then
-    onoe "Can't find homebrew installed on your system. Is brew in your path?"
-    exit!
-  end
-  actions.each do |action|
-    sh %{brew #{action}}
-  end
-end
-
-task :install do
-  brew_action "install --HEAD #{(Pathname.pwd / 'formulae' / "libav.rb").realpath}"
-  brew_action "install --HEAD #{(Pathname.pwd / 'formulae' / "mplayer2.rb").realpath}"
-end
-
-task :uninstall do
-  brew_action "uninstall libav mplayer2"
-end
-
-task :reinstall => [:uninstall, :install] do ; end
-
-task :upgrade => [:reinstall] do ; end
-
 namespace :sparkle do
   task :clear do
     Pathname.new('sparkle').rmtree
   end
-  
+
   task :init do
     if Pathname.new('sparkle').exist? then
       onoe "Sparkle directory alredy exists. Run rake sparkle:clear"

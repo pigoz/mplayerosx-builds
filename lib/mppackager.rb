@@ -21,6 +21,8 @@ class MPPgkr < Packager
       :CFBundleIconFile => "icon",
       :CFBundleInfoDictionaryVersion => "6.0",
       :CFBundleDevelopmentRegion => "English",
+      :NSPrincipalClass => "NSApplication",
+      :NSHighResolutionCapable => true,
       :CFBundleDocumentTypes => [
           {:CFBundleTypeExtensions => audio_extensions,
            :CFBundleTypeIconFile => "audio.icns",
